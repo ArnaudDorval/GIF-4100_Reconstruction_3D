@@ -1,5 +1,7 @@
 import cv2.cv2 as cv
 import numpy as np
+from plyfile import PlyData, PlyElement
+from typing import *
 
 
 LASER_MASK_VIDEO_SIZE = (1400, 800)
@@ -46,3 +48,16 @@ def visualize(frames, laser_masks, laser_positions, *, show_laser_mask_video, sa
         laser_mask_video.write(resized_image)
     if save_laser_mask_video:
         laser_mask_video.release()
+
+
+def create_ply_file_from_point_cloud(points: List[tuple], filepath):
+    # https://github.com/dranjan/python-plyfile
+    updated_points = []
+    color = (255, 0, 0)
+    for point in points:
+        updated_points.append((*point, *color))
+    vertices = np.array(updated_points,
+                        dtype=[("x", "f4"), ("y", "f4"), ("z", "f4"),
+                               ("diffuse_red", "u1"), ("diffuse_green", "u1"), ("diffuse_blue", "u1")])
+    element = PlyElement.describe(vertices, "vertex")
+    PlyData([element], text=True).write(filepath)
