@@ -27,8 +27,9 @@ def main():
             laser_positions[camera_position] = get_laser_2d_position(laser_masks[camera_position])
 
         if laser_positions["left"] and laser_positions["right"]:
-            x, y, z = compute_distance(laser_positions["left"], laser_positions["right"], 1280)
-            point_cloud_3d.append((x, y, z))
+            point = compute_distance(laser_positions["left"], laser_positions["right"], 1280)
+            if point:
+                point_cloud_3d.append(point)
 
         visualize(frames, laser_masks, laser_positions, show_laser_mask_video=SHOW_LASER_MASK_VIDEO,
                   save_laser_mask_video=SAVE_LASER_MASK_VIDEO)
