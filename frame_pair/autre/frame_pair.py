@@ -19,7 +19,7 @@ print( "nb right frame : " + str(right_length) )
 rval, frame = left_cap.read()
 cv2.imwrite('left_frame.jpg', frame)
 
-left_time_stamp, bidon = detect_time('left_frame.jpg')
+left_time_stamp, bidon = detect_time('autre/left_frame.jpg')
 print("left time : " + str(left_time_stamp))
 
 # extract first_frame
@@ -27,7 +27,7 @@ rval, frame = right_cap.read()
 cv2.imwrite('right_frame.jpg', frame)
 
 
-right_time_stamp, bidon = detect_time('right_frame.jpg')
+right_time_stamp, bidon = detect_time('autre/right_frame.jpg')
 print("right time : " + str(right_time_stamp))
 
 if(left_time_stamp < right_time_stamp):
