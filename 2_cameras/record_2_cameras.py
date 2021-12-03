@@ -2,8 +2,9 @@ import os
 import numpy as np
 import cv2
 from multiprocessing import Process
+from datetime import datetime
 
-fps = 24.0
+fps = 30
 res = '720p'
 
 # Standard Video Dimensions Sizes
@@ -58,13 +59,22 @@ def webcam_video(p_camera):
     else:
         name = 'right'
 
-    filename = "video_" + name + ".avi"
+    filename = "video_" + name + ".mp4"
 
-    out = cv2.VideoWriter(filename, get_video_type(filename), 25, get_dims(cap, res))
+    out = cv2.VideoWriter(filename, get_video_type(filename), fps, get_dims(cap, res))
 
     while (True):
         ret, frame = cap.read()
         if ret == True:
+            font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
+            t = datetime.now()
+            dt = str(str(t.hour) + ':' + str(t.minute) + ':' + str(t.second) + '.' + str(t.microsecond))
+
+            frame = cv2.putText(frame, dt,
+                                (1000, 700),
+                                font, 1,
+                                (255, 255, 255),
+                                4, cv2.LINE_8)
             out.write(frame)
             cv2.imshow(name, frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):

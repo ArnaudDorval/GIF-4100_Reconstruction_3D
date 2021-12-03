@@ -1,9 +1,10 @@
 import os
 import numpy as np
 import cv2
+from datetime import datetime
 
-filename = "video.avi"
-fps = 24.0
+filename = "ttt.avi"
+fps = 30
 res = '720p'
 
 # Standard Video Dimensions Sizes
@@ -45,19 +46,30 @@ def get_video_type(filename):
 
 
 cap = cv2.VideoCapture(0)
-out = cv2.VideoWriter(filename, get_video_type(filename), 25, get_dims(cap, res))
+out = cv2.VideoWriter(filename, get_video_type(filename), fps, get_dims(cap, res))
 
 while(True):
     # capture frame-by-frame
     ret, frame = cap.read()
+    if ret:
 
-    #enregistrer vid
-    out.write(frame)
+        font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
+        t = datetime.now()
+        dt = str(str(t.hour) + ':' + str(t.minute) + ':' + str(t.second) + '.' + str(t.microsecond))
 
-    #display resulting frame
-    cv2.imshow('frame', frame)
-    if cv2.waitKey(20) & 0xFF == ord('q'):
-        break
+        frame = cv2.putText(frame, dt,
+                            (1000, 700),
+                            font, 1,
+                            (255, 255, 255),
+                            4, cv2.LINE_8)
+        #enregistrer vid
+        out.write(frame)
+
+        #display resulting frame
+
+        cv2.imshow('frame', frame)
+        if cv2.waitKey(20) & 0xFF == ord('q'):
+            break
 
 cap.release()
 out.release()
