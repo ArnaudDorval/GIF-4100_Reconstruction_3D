@@ -2,6 +2,7 @@ import os
 import numpy as np
 import cv2
 from datetime import datetime
+import pandas as pd
 
 filename = "ttt.avi"
 fps = 30
@@ -48,6 +49,9 @@ def get_video_type(filename):
 cap = cv2.VideoCapture(0)
 out = cv2.VideoWriter(filename, get_video_type(filename), fps, get_dims(cap, res))
 
+
+df_arr = []
+
 while(True):
     # capture frame-by-frame
     ret, frame = cap.read()
@@ -56,7 +60,7 @@ while(True):
         font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
         t = datetime.now()
         dt = str(str(t.hour) + ':' + str(t.minute) + ':' + str(t.second) + '.' + str(t.microsecond))
-
+        df_arr.append(dt)
         frame = cv2.putText(frame, dt,
                             (1000, 700),
                             font, 1,
@@ -69,6 +73,8 @@ while(True):
 
         cv2.imshow('frame', frame)
         if cv2.waitKey(20) & 0xFF == ord('q'):
+            df = pd.DataFrame(df_arr, columns=['time'])
+            df.to_csv("ttt_times", encoding='utf-8', index=False)
             break
 
 cap.release()

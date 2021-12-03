@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 from multiprocessing import Process
 from datetime import datetime
+import pandas as pd
 
 fps = 30
 res = '720p'
@@ -62,6 +63,7 @@ def webcam_video(p_camera):
     filename = "video_" + name + ".mp4"
 
     out = cv2.VideoWriter(filename, get_video_type(filename), fps, get_dims(cap, res))
+    df_arr = []
 
     while (True):
         ret, frame = cap.read()
@@ -69,6 +71,8 @@ def webcam_video(p_camera):
             font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX
             t = datetime.now()
             dt = str(str(t.hour) + ':' + str(t.minute) + ':' + str(t.second) + '.' + str(t.microsecond))
+
+            df_arr.append(dt)
 
             frame = cv2.putText(frame, dt,
                                 (1000, 700),
@@ -78,6 +82,8 @@ def webcam_video(p_camera):
             out.write(frame)
             cv2.imshow(name, frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                df = pd.DataFrame(df_arr, columns=['time'])
+                df.to_csv(name + "_times.csv", encoding='utf-8', index=False)
                 break
         else:
             break
