@@ -2,3 +2,4 @@ opencv-python>=4.5
 matplotlib
 scipy
 plyfile
+pandas

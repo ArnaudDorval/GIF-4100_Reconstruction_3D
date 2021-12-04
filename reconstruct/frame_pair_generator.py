@@ -2,6 +2,7 @@ from typing import *
 import numpy as np
 import cv2.cv2 as cv
 from constants import DATA_PATH
+import pandas as pd
 
 
 def get_test_frame_pairs() -> Generator[Tuple[np.ndarray, np.ndarray], None, None]:
@@ -19,5 +20,9 @@ def get_test_frame_pairs() -> Generator[Tuple[np.ndarray, np.ndarray], None, Non
         frame_right_index += 1
 
 
-def get_frame_pairs() -> Generator[Tuple[np.ndarray, np.ndarray], None, None]:
-    pass
+def get_frame_pairs(video_name) -> Generator[Tuple[np.ndarray, np.ndarray], None, None]:
+    df = pd.read_csv(DATA_PATH / video_name / "pair_image.csv")
+    for _, row in df.iterrows():
+        image_left = cv.imread(str(DATA_PATH / video_name / "left" / row["left"]))
+        image_right = cv.imread(str(DATA_PATH / video_name / "right" / row["right"]))
+        yield image_left, image_right
