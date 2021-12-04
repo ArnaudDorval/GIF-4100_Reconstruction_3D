@@ -7,7 +7,7 @@ from typing import *
 LASER_MASK_VIDEO_SIZE = (1400, 800)
 
 
-def visualize(frames, laser_masks, laser_positions, *, show_laser_mask_video, save_laser_mask_video):
+def visualize(color_image, frames, laser_masks, laser_positions, *, show_laser_mask_video, save_laser_mask_video):
     if save_laser_mask_video:
         laser_mask_video = cv.VideoWriter("laser_mask.mp4", cv.VideoWriter_fourcc(*"mp4v"), 30, LASER_MASK_VIDEO_SIZE)
 
@@ -31,6 +31,7 @@ def visualize(frames, laser_masks, laser_positions, *, show_laser_mask_video, sa
                                                                (0, 255, 0), 10)
 
     img = np.vstack((
+        np.hstack((color_image, color_image)),
         cv.putText(np.hstack(
             (annotated_frames["left"], annotated_frames["right"])
         ), "bla", (0, 0), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255)),

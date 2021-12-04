@@ -24,5 +24,7 @@ def get_frame_pairs(video_name) -> Generator[Tuple[np.ndarray, np.ndarray], None
     df = pd.read_csv(DATA_PATH / video_name / "pair_image.csv")
     for _, row in df.iterrows():
         image_left = cv.imread(str(DATA_PATH / video_name / "left" / row["left"]))
+        image_left[-51:,:,:] = 0
         image_right = cv.imread(str(DATA_PATH / video_name / "right" / row["right"]))
+        image_right[-51:,:,:] = 0
         yield image_left, image_right

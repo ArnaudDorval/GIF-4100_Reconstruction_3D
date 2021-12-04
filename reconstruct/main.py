@@ -9,14 +9,17 @@ SHOW_LASER_MASK_VIDEO = getenv("OPTION_SHOW_LASER_MASK_VIDEO", "1") == "1"
 # TODO: not working now (using Sharex instead)
 SAVE_LASER_MASK_VIDEO = getenv("OPTION_SAVE_LASER_MASK_VIDEO", "0") == "1"
 VIDEO_NAME = "botte_1"
+BEGINNING_FRAME_COUNT_COLOR = 10
 
 
 def main():
     point_cloud_3d = []
 
+    color_image = None
     for i, (left_frame, right_frame) in enumerate(get_frame_pairs(VIDEO_NAME)):
-        if i > 1000:  # TODO: remove this (used to iterate through less points)
-            break
+        if i == 0:  # TODO: remove this (used to iterate through less points)
+            color_image = left_frame
+
         frames = {
             "left": left_frame,
             "right": right_frame
@@ -32,11 +35,10 @@ def main():
             if point:
                 point_cloud_3d.append(point)
 
-        visualize(frames, laser_masks, laser_positions, show_laser_mask_video=SHOW_LASER_MASK_VIDEO,
+        visualize(color_image, frames, laser_masks, laser_positions, show_laser_mask_video=SHOW_LASER_MASK_VIDEO,
                   save_laser_mask_video=SAVE_LASER_MASK_VIDEO)
 
     create_ply_file_from_point_cloud(point_cloud_3d, "out.ply")
-
 
 
 if __name__ == '__main__':
