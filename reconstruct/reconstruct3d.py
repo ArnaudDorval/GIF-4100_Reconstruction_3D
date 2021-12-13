@@ -9,7 +9,7 @@ VIEW_ANGLE = 47.9367
 
 DISTANCE_BETWEEN_CAMERAS = 50  # millimeters
 FOCAL_LENGTH = 5  # millimeters TODO: change this to real value from camera matrix
-XY_SCALE_FACTOR_PIXEL_TO_MM = 1 # 7 / 1280  # (~7 mm image plane width / 1280 px) TODO: Change this for real value
+XY_SCALE_FACTOR_PIXEL_TO_MM = 7 / 1280  # (~7 mm image plane width / 1280 px) TODO: Change this for real value
 MAX_DISTANCE = 2000 # TODO: Find good threshold
 
 # make sure pickle has access to calibration_var
@@ -33,7 +33,7 @@ def compute_distance(left_position: tuple, right_position: tuple, image_width) -
     if abs(d) > MAX_DISTANCE:
         return None
 
-    return left_position[0] * XY_SCALE_FACTOR_PIXEL_TO_MM, left_position[1] * XY_SCALE_FACTOR_PIXEL_TO_MM, d
+    return left_position[0], left_position[1], d * 6
 
 
 def get_3d_position(laser_positions: Dict[str, tuple]) -> tuple:

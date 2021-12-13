@@ -51,11 +51,11 @@ def visualize(color_image, frames, laser_masks, laser_positions, *, show_laser_m
         laser_mask_video.release()
 
 
-def create_ply_file_from_point_cloud(points: List[tuple], filepath):
+def create_ply_file_from_point_cloud(points: List[tuple], color_image: np.ndarray, filepath):
     # https://github.com/dranjan/python-plyfile
     updated_points = []
-    color = (255, 0, 0)
     for point in points:
+        color = color_image[point[1], point[0]]
         updated_points.append((*point, *color))
     vertices = np.array(updated_points,
                         dtype=[("x", "f4"), ("y", "f4"), ("z", "f4"),

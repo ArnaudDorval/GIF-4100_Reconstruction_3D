@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
+from root import ROOT_PATH
 
 
-image_name = "./image/left_frame8443.jpg"
+image_name = str(ROOT_PATH / "data/botte_1/left/left_frame1108.jpg")
 frame = cv2.imread(image_name)
 
 hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
